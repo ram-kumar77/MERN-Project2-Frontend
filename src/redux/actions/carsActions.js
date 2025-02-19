@@ -4,7 +4,7 @@ import { alert } from '../../utils/alert';
 export const getAllCars = () => async (dispatch) => {
   dispatch({ type: 'LOADING', payload: true });
   try {
-    const response = await axios.get('http://localhost:5000/api/cars/cars'); // Corrected endpoint
+    const response = await axios.get('${baseURL}/api/cars/cars'); // Corrected endpoint
     console.log('Fetched cars:', response.data); // Log fetched data
     dispatch({ type: 'GET_ALL_CARS', payload: response.data });
     dispatch({ type: 'LOADING', payload: false });
@@ -18,7 +18,7 @@ export const addCar = (reqObj) => async (dispatch) => {
   dispatch({ type: 'LOADING', payload: true });
   try {
     // Add base URL and ensure request body format is correct
-    const response = await axios.post('http://localhost:5000/api/cars/addcar', {
+    const response = await axios.post('${baseURL}/api/cars/addcar', {
       vehicles: [{
         name: reqObj.name,
         image: reqObj.image,
