@@ -1,11 +1,11 @@
-import axios from 'axios';
+import api from '../utils/api';
 import { alert } from '../../utils/alert';
 
 export const getAllCars = () => async (dispatch) => {
   dispatch({ type: 'LOADING', payload: true });
   try {
-    const response = await axios.get('${baseURL}/api/cars/cars'); // Corrected endpoint
-    console.log('Fetched cars:', response.data); // Log fetched data
+    const response = await api.get('/api/cars/cars');
+    console.log('Fetched cars:', response.data);
     dispatch({ type: 'GET_ALL_CARS', payload: response.data });
     dispatch({ type: 'LOADING', payload: false });
   } catch (error) {
@@ -14,11 +14,11 @@ export const getAllCars = () => async (dispatch) => {
     dispatch({ type: 'ERROR', payload: error.message });
   }
 };
+
 export const addCar = (reqObj) => async (dispatch) => {
   dispatch({ type: 'LOADING', payload: true });
   try {
-    // Add base URL and ensure request body format is correct
-    const response = await axios.post('${baseURL}/api/cars/addcar', {
+    const response = await api.post('/api/cars/addcar', {
       vehicles: [{
         name: reqObj.name,
         image: reqObj.image,
@@ -32,7 +32,6 @@ export const addCar = (reqObj) => async (dispatch) => {
 
     if (response.status === 200) {
       alert.success('Car added successfully');
-
       dispatch(getAllCars());
     }
     dispatch({ type: 'LOADING', payload: false });
@@ -46,7 +45,7 @@ export const addCar = (reqObj) => async (dispatch) => {
 export const editCar = (reqObj) => async (dispatch) => {
   dispatch({ type: 'LOADING', payload: true });
   try {
-    const response = await axios.post('/api/cars/editcar', reqObj);
+    const response = await api.post('/api/cars/editcar', reqObj);
     if (response.status === 200) {
       alert.success('Car edited successfully');
     }
@@ -61,7 +60,7 @@ export const editCar = (reqObj) => async (dispatch) => {
 export const deleteCar = (reqObj) => async (dispatch) => {
   dispatch({ type: 'LOADING', payload: true });
   try {
-    await axios.post('/api/cars/deletecar', reqObj);
+    await api.post('/api/cars/deletecar', reqObj);
     alert.success('Car deleted successfully');
     dispatch({ type: 'LOADING', payload: false });
   } catch (error) {

@@ -1,12 +1,30 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL || 'https://mern-project2-backend-2.onrender.com',
+  baseURL: process.env.REACT_APP_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json'
   }
 });
 
-export const baseURL = 'https://mern-project2-backend-2.onrender.com';
+// Add request interceptor for logging
+api.interceptors.request.use(config => {
+  console.log('Making API call to:', config.url);
+  return config;
+}, error => {
+  console.error('Request error:', error);
+  return Promise.reject(error);
+});
+
+// Add response interceptor for logging
+api.interceptors.response.use(response => {
+  console.log('API response from:', response.config.url);
+  return response;
+}, error => {
+  console.error('Response error:', error);
+  return Promise.reject(error);
+});
+
+export const baseURL = process.env.REACT_APP_API_BASE_URL;
 
 export default api;
