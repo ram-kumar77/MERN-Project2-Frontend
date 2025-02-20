@@ -18,7 +18,7 @@ Password - asdfghjkl
 
 ##Admin Login:
 Id - Admin
-Password - Admin123
+Password - Admin@123
 
 
 
