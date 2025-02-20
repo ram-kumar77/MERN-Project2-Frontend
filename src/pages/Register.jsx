@@ -14,7 +14,16 @@ function Register() {
         event.preventDefault();
         try {
             const formData = new FormData(event.target);
-            const values = Object.fromEntries(formData.entries());
+            const values = {
+                username: formData.get('username'),
+                email: formData.get('email'),
+                password: formData.get('password')
+            };
+            
+            // Validate password match
+            if (formData.get('password') !== formData.get('cpassword')) {
+                throw new Error('Passwords do not match');
+            }
             
             await dispatch(userRegister(values));
             history.push('/login');

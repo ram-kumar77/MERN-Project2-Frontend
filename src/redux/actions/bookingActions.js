@@ -1,4 +1,4 @@
-import api from '../utils/api';
+import api from '../../utils/api';
 import { GET_ALL_BOOKINGS, SET_LOADING } from '../types';
 
 export const getAllBookings = () => async (dispatch) => {

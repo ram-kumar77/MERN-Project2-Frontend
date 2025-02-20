@@ -1,4 +1,4 @@
-import api from '../utils/api';
+import api from '../../utils/api';
 import { alert } from '../../utils/alert';
 
 export const getAllCars = () => async (dispatch) => {

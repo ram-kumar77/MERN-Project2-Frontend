@@ -21,20 +21,36 @@ function Login({ setUser }) {
             const formData = new FormData(event.target);
             const values = Object.fromEntries(formData.entries());
             
-            // Check for admin credentials
-            if (values.username === 'admin' && values.password === 'admin123') {
-            const response = await dispatch(userLogin(values));
-            console.log('Admin login response:', response); // Debug log
-            if (response && response.isAdmin) {
-                setUser(response);
-                toast.success('Welcome Admin!');
-                history.push('/admin');
-            }
-            } else {
+            // Direct check for admin credentials
+            if (values.username === 'admin' && values.password === 'Admin@123') {
                 const response = await dispatch(userLogin(values));
-                console.log('User login response:', response); // Debug log
                 if (response) {
-                    setUser(response);
+                    const adminUser = {
+                        ...response,
+                        isAdmin: true
+                    };
+                    setUser(adminUser);
+                    localStorage.setItem('user', JSON.stringify(adminUser));
+                    toast.success('Welcome Admin!');
+                    history.push('/admin');
+                    return;
+                }
+            }
+            
+            // Regular user login
+            const response = await dispatch(userLogin(values));
+            if (response) {
+                const userWithAdmin = {
+                    ...response,
+                    isAdmin: response.role === 'admin'
+                };
+                setUser(userWithAdmin);
+                localStorage.setItem('user', JSON.stringify(userWithAdmin));
+                
+                if (userWithAdmin.isAdmin) {
+                    toast.success('Welcome Admin!');
+                    history.push('/admin');
+                } else {
                     toast.success('Login successful!');
                     history.push('/');
                 }
